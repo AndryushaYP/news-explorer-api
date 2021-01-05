@@ -1,8 +1,9 @@
 const router = require('express').Router();
 
 const usersRouter = require('./user.js');
+const articleRouter = require('./article.js');
 
-router.use(usersRouter);
+router.use(usersRouter, articleRouter);
 
 router.use('*', () => {
   const error = new Error('Запрашиваемый ресурс не найден');
