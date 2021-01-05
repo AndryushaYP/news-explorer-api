@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 
+const jwt = require('jsonwebtoken');
+
 /* const jwt = require('jsonwebtoken'); */
 
 const User = require('../models/user');
@@ -27,5 +29,31 @@ module.exports.createUser = (req, res, next) => {
         });
     }).catch((err) => {
       next(err);
+    });
+};
+
+// Авторизация
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      res.status(200).send({ token });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+// Инфо текущего пользователя
+
+module.exports.getUserMe = (req, res) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      res.status(200).send({ email: user.email, name: user.name });
+    })
+    .catch((err) => {
+      res.status(404).send(err.message);
     });
 };
