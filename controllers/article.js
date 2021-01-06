@@ -42,7 +42,7 @@ module.exports.deleteArticle = (req, res, next) => {
   Article.findById(req.params.id)
     .then((article) => {
       if (!article) {
-        const error = new Error('Нет такой карточки');
+        const error = new Error('Такой статьи не существует!');
         error.statusCode = 404;
         throw error;
       } if (!article.owner.equals(req.user._id)) {
