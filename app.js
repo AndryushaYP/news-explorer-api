@@ -5,6 +5,8 @@ const cors = require('cors');
 
 const routes = require('./routes/index.js');
 
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -19,7 +21,11 @@ app.use(bodyParser.json());
 
 app.use(cors());
 
+app.use(requestLogger);
+
 app.use(routes);
+
+app.use(errorLogger);
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
