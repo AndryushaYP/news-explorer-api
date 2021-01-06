@@ -1,20 +1,22 @@
 const Article = require('../models/article');
 
+const customError = require('../utils/error.js');
+
 // Возвращает все сохранённые пользователем статьи
 
-module.exports.getUserArticles = (req, res) => {
+module.exports.getUserArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
     .then((article) => {
       res.status(200).send(article);
     })
     .catch((err) => {
-      res.status(404).send({ maessage: err.maessage });
+      customError(err, res, next);
     });
 };
 
 // Добавить статью
 
-module.exports.createArticle = (req, res) => {
+module.exports.createArticle = (req, res, next) => {
   const {
     keyword, title, text, date, source, link, image,
   } = req.body;
@@ -32,7 +34,7 @@ module.exports.createArticle = (req, res) => {
       res.status(200).send(article);
     })
     .catch((err) => {
-      res.status(404).send({ maessage: err.maessage });
+      customError(err, res, next);
     });
 };
 
@@ -52,6 +54,6 @@ module.exports.deleteArticle = (req, res, next) => {
       }
       return Article.findByIdAndRemove(req.params.id);
     })
-    .then((card) => res.status(200).send(card))
+    .then((article) => res.status(200).send(article))
     .catch(next);
 };

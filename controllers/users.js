@@ -6,6 +6,8 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const User = require('../models/user');
 
+const customError = require('../utils/error.js');
+
 // Регистрация
 
 module.exports.createUser = (req, res, next) => {
@@ -48,12 +50,12 @@ module.exports.login = (req, res, next) => {
 
 // Инфо текущего пользователя
 
-module.exports.getUserMe = (req, res) => {
+module.exports.getUserMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       res.status(200).send({ email: user.email, name: user.name });
     })
     .catch((err) => {
-      res.status(404).send(err.message);
+      customError(err, res, next);
     });
 };

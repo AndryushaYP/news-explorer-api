@@ -4,8 +4,10 @@ const auth = require('../middlewares/auth.js');
 
 const { getUserArticles, createArticle, deleteArticle } = require('../controllers/article');
 
-router.get('/articles', auth, getUserArticles);
-router.post('/articles', auth, createArticle);
-router.delete('/articles/:id', auth, deleteArticle);
+const { validateCreateArticle, validateParams } = require('../middlewares/validateRequest.js');
+
+router.get('/articles', validateParams, auth, getUserArticles);
+router.post('/articles', validateCreateArticle, auth, createArticle);
+router.delete('/articles/:id', validateParams, auth, deleteArticle);
 
 module.exports = router;
