@@ -39,7 +39,9 @@ userShema.statics.findUserByCredentials = function (email, password) {
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
-            return Promise.reject(new Error('Неправильные почта или пароль'));
+            const error = new Error('Неправильные почта или пароль');
+            error.statusCode = 401;
+            throw error;
           }
           return user;
         });

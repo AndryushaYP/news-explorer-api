@@ -31,7 +31,16 @@ module.exports.createArticle = (req, res, next) => {
     owner: req.user._id,
   })
     .then((article) => {
-      res.status(200).send(article);
+      res.status(200).send({
+        id: article._id,
+        keyword: article.keyword,
+        title: article.title,
+        text: article.text,
+        date: article.date,
+        source: article.source,
+        link: article.link,
+        image: article.image,
+      });
     })
     .catch((err) => {
       customError(err, res, next);
