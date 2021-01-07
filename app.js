@@ -9,10 +9,11 @@ const routes = require('./routes/index.js');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000, MONGO_URL = 'mongodb://localhost:27017/diplomdb' } = process.env;
+const { MONGO, PORT } = require('./config.js');
+
 const app = express();
 
-mongoose.connect(MONGO_URL, {
+mongoose.connect(MONGO, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
