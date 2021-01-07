@@ -6,7 +6,7 @@ const { getUserArticles, createArticle, deleteArticle } = require('../controller
 
 const { validateCreateArticle, validateParams } = require('../middlewares/validateRequest.js');
 
-router.get('/articles', validateParams, auth, getUserArticles);
+router.get('/articles', auth, getUserArticles);
 router.post('/articles', validateCreateArticle, auth, createArticle);
 router.delete('/articles/:id', validateParams, auth, deleteArticle);
 
