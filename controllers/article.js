@@ -50,7 +50,7 @@ module.exports.createArticle = (req, res, next) => {
 // Удалить статью
 
 module.exports.deleteArticle = (req, res, next) => {
-  Article.findById(req.params.id)
+  Article.findById(req.params.id).select('+owner')
     .then((article) => {
       if (!article) {
         const error = new Error('Такой статьи не существует!');
